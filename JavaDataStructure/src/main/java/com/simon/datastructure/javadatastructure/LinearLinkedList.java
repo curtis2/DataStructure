@@ -35,7 +35,7 @@ public class LinearLinkedList<E>{
         Node<E> temp=header;
         int count=0;
         while (index!=count){
-           temp.item=temp.next.item;
+           temp=temp.next;
            count++;
         }
         return temp.item;
@@ -85,7 +85,7 @@ public class LinearLinkedList<E>{
             header=insertNode;
         }else{
            Node lastNode=getNode(size-1);
-           lastNode.addNextNode(insertNode);;
+           lastNode.addNextNode(insertNode);
         }
         size++;
     }
@@ -108,6 +108,7 @@ public class LinearLinkedList<E>{
         }
         insertNode.addNextNode(temp.next);
         temp.addNextNode(insertNode);
+//        size++;
     }
 
 
@@ -149,6 +150,24 @@ public class LinearLinkedList<E>{
         return this.size;
     }
 
+
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        Node<E> temp=header;
+        while (temp.next!=null){
+            sb.append(temp.item.toString());
+            sb.append(',');
+            temp=temp.next;
+        }
+        sb.append(temp.item.toString());
+
+        sb.append(']').toString();
+        return  sb.toString();
+    }
+
     /**
      * 链表节点对象
      * @param <E>
@@ -172,6 +191,7 @@ public class LinearLinkedList<E>{
          this.next=node;
      }
     }
+
 
 
 }
