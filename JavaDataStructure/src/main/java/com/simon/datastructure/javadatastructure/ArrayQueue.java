@@ -8,15 +8,15 @@ package com.simon.datastructure.javadatastructure;
  */
 public class ArrayQueue<E>{
     /**
-     * 用于存储栈元素的数组
+     * 用于存储队列元素的数组
      */
     Object[] elements;
     /**
-     * 用于表示栈顶元素的下表
+     * 用于表示队列尾部元素的下表
      */
-    int top;
+    int last;
     /**
-     * 用于表示栈的容量
+     * 用于表示队列的容量
      */
     int maxSize;
 
@@ -28,8 +28,8 @@ public class ArrayQueue<E>{
         if(maxSize<0){
             throw  new IllegalArgumentException("stack size must more than zero..");
         }
-        this.maxSize = maxSize;
-        this.top=-1;
+        this.last=0;
+        this.maxSize=maxSize;
         this.elements=new Object[maxSize];
     }
 
@@ -37,7 +37,7 @@ public class ArrayQueue<E>{
      * 生成的队列Q是否为满。
      */
     public boolean isFull() {
-        return top==(maxSize-1);
+        return last==maxSize;
     }
 
     /**
@@ -46,24 +46,36 @@ public class ArrayQueue<E>{
      */
     public void push(E e){
         if(isFull()){
-            System.out.println("stack is full now..");
+            System.out.println("Queue is full now..");
         }else{
-            elements[++top]=e;
+            elements[last++]=e;
         }
     }
 
     /**
      * 将队头数据元素从队列中删除并返回。
      */
-    @SuppressWarnings("unchecked")
     public E pop(){
-        if(isEmpty()){
-            System.out.println("stack is empty now..");
+/*        if(isEmpty()){
+            System.out.println("Queue is empty now..");
             return null;
         }else{
-            E popE=(E) elements[0];
-            elements[0]=null;
-            top--;
+            E popE=(E)elements[frist];
+            elements[frist]=null;
+            frist++;
+            return popE;
+        }
+        */
+        //优化，元素统一向前移动一位，可以优化队列的空间使用
+        if(isEmpty()){
+            System.out.println("Queue is empty now..");
+            return null;
+        }else{
+            E popE=(E)elements[0];
+            for (int i = 0; i <last-1 ; i++) {
+                elements[i]=elements[i+1];
+            }
+            last--;
             return popE;
         }
     }
@@ -72,22 +84,21 @@ public class ArrayQueue<E>{
      * 判断队列是否为空。
      */
     public boolean isEmpty(){
-        return top==-1;
+        return last==0;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
-        for (int i = 0; i <top+1; i++) {
+        for (int i = 0; i <last; i++) {
             sb.append(elements[i].toString());
-            if(i!=top){
+            if(i!=last-1){
                 sb.append(',');
             }
         }
         sb.append(']').toString();
         return  sb.toString();
     }
-
 
 }
