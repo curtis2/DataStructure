@@ -174,7 +174,6 @@ public class LinearLinkedList<E>{
             temp=temp.next;
         }
         sb.append(temp.item.toString());
-
         sb.append(']').toString();
         return  sb.toString();
     }
