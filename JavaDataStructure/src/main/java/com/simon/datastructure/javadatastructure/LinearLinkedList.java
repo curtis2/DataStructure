@@ -4,7 +4,7 @@ package com.simon.datastructure.javadatastructure;
  * auther: Simon zhang
  * Emaill:18292967668@163.com
  *
- *线性表的链表代码实现
+ *  线性表的链表代码实现
  */
 public class LinearLinkedList<E>{
     /**
@@ -22,7 +22,6 @@ public class LinearLinkedList<E>{
      * @param
      */
     public LinearLinkedList() {
-        header=new Node<>();
     }
 
     /**
@@ -31,7 +30,9 @@ public class LinearLinkedList<E>{
      * @return
      */
     public E get(int index){
-        validateIndex(index);
+        if(index<0||index>size-1){
+            throw new IllegalArgumentException("Index out Of Bound Index:"+index+"Size:"+size);
+        }
         Node<E> temp=header;
         int count=0;
         while (index!=count){
@@ -47,7 +48,9 @@ public class LinearLinkedList<E>{
      * @return
      */
     public Node getNode(int index){
-        validateIndex(index);
+        if(index<0||index>size-1){
+            throw new IllegalArgumentException("Index out Of Bound Index:"+index+"Size:"+size);
+        }
         Node<E> temp=header;
         int count=0;
         while (index!=count){
@@ -66,11 +69,24 @@ public class LinearLinkedList<E>{
     public int indexOf(E e){
         Node<E> temp=header;
         int count=0;
-        while (!e.equals(temp.item)){
-            temp.item=temp.next.item;
-            count++;
+        if(e==null){
+             while (count!=size){
+               if(temp.item==null){
+                   return count;
+               }
+                temp=temp.next;
+                count++;
+            }
+        }else{
+            while (count!=size){
+                if(temp.item.equals(e)){
+                    return count;
+                }
+                temp=temp.next;
+                count++;
+            }
         }
-        return count;
+        return -1;
     }
 
     /**
@@ -79,7 +95,6 @@ public class LinearLinkedList<E>{
      * @return
      */
     public void add(E e){
-        //将插入元素包装成一个节点对象
         Node<E> insertNode=new Node<>(e);
         if(size==0){
             header=insertNode;
@@ -96,49 +111,46 @@ public class LinearLinkedList<E>{
      * @return
      */
     public void add(E e,int index){
-        //将插入元素包装成一个节点对象
-        Node<E> insertNode=new Node<>(e);
-
-        Node<E> temp=header;
-       //迭代列表，找到index对应的上一个node, 然后把他的节点next 节点置为e, e的下一个节点置为index对应的节点
-        int count=0;
-        while ((index-1)!=count){
-            temp=temp.next;
-            count++;
+        if(index<0||index>size){
+            throw new IllegalArgumentException("Index out Of Bound Index:"+index+"Size:"+size);
         }
-        insertNode.addNextNode(temp.next);
-        temp.addNextNode(insertNode);
-//        size++;
+        Node<E> insertNode=new Node<>(e);
+        if(size==0){
+            header=insertNode;
+        }else {
+            //找到index对应的node, 然后把他的next节点置为e, e的next节点置为index node的next
+            Node<E> temp = getNode(index-1);
+            insertNode.addNextNode(temp.next);
+            temp.addNextNode(insertNode);
+        }
+        size++;
     }
 
 
- /**
+    /**
      * 删除指定次序的元素
      * @param index
      * @return
      */
     public E remove(int index){
-        Node<E> temp=header;
-        //迭代列表，找到index对应的上一个node, 然后把他的next节点置为index对应的节点的next。
-        int count=0;
-        while ((index-1)!=count){
-            temp=temp.next;
-            count++;
-        }
-        E oldValue= temp.next.item;
-        temp.addNextNode(temp.next.next);
-        size--;
-        return oldValue;
-    }
-
-    /**
-     * 验证下标是否合法
-     * @param index
-     */
-    private void validateIndex(int index) {
-        if(index<0||index>size){
+        E oldValue;
+        if(index<0||index>size-1){
             throw new IllegalArgumentException("index out Of Bound Index:"+index+"Size:"+size);
         }
+        //移除头节点
+        if(index==0){
+            header=header.next;
+            oldValue=header.item;
+        }else{
+            //找到index对应的node, 然后把他的next节点置为index对应的节点的next。
+            Node<E> temp=getNode(index-1);
+            oldValue= temp.next.item;
+            temp.addNextNode(temp.next.next);
+            //清空引用
+            temp.next.next=null;
+        }
+        size--;
+        return oldValue;
     }
 
     /**
@@ -149,7 +161,6 @@ public class LinearLinkedList<E>{
     public int size(){
         return this.size;
     }
-
 
 
     @Override
@@ -168,30 +179,31 @@ public class LinearLinkedList<E>{
         return  sb.toString();
     }
 
+
     /**
      * 链表节点对象
      * @param <E>
      */
     class Node<E>{
-    /**
-     * 当前数据对象
-     */
-     E item;
-    /**
-     * 下一个节点
-     */
-     Node<E> next;
+        /**
+         * 当前数据对象
+         */
+         E item;
+        /**
+         * 下一个节点
+         */
+         Node<E> next;
 
-     public Node() {
-     }
-     public Node(E item) {
-            this.item = item;
-     }
-     void addNextNode(Node<E> node){
-         this.next=node;
-     }
+         public Node() {
+         }
+
+         public Node(E item) {
+                this.item = item;
+         }
+
+         void addNextNode(Node<E> node){
+             this.next=node;
+         }
     }
-
-
 
 }

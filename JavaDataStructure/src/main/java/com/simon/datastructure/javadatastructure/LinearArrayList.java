@@ -88,8 +88,8 @@ public class LinearArrayList<E> {
      * @return
      */
     public void add(E e){
-      ensureCapacity(size+1);
-      elements[size++]=e;
+       ensureCapacity(size+1);
+       elements[size++]=e;
     }
 
     /**

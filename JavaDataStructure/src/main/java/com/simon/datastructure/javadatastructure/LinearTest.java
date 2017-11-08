@@ -36,5 +36,7 @@ public class LinearTest {
         }
         Long lEndTime=System.currentTimeMillis();//记录EndTime
         System.out.println("ArrayList add time---->"+(lEndTime-lBeginTime));*/
+
+
     }
 }
