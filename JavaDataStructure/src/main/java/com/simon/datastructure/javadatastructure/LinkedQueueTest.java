@@ -5,9 +5,9 @@ package com.simon.datastructure.javadatastructure;
  * Emaill:18292967668@163.com
  */
 
-public class ArrayQueueTest{
+public class LinkedQueueTest {
     public static void main(String[] args){
-        ArrayQueue<String>  queue=new ArrayQueue<>(10);
+        LinkedQueue<String>  queue=new LinkedQueue<>(10);
 
         System.out.println("queue.isEmpty():"+queue.isEmpty());
         queue.push("A");
@@ -31,15 +31,6 @@ public class ArrayQueueTest{
 
         String pop2 = queue.pop();
         System.out.println("queue.pop():"+pop2);
-        System.out.println("queue after pop:"+queue);
-
-
-        queue.push("G");
-        queue.push("H");
-        queue.push("I");
-
-        String pop3 = queue.pop();
-        System.out.println("queue.pop():"+pop3);
         System.out.println("queue after pop:"+queue);
 
     }

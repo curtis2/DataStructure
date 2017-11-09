@@ -42,7 +42,7 @@ public class LinkedStack<E>{
             System.out.println("stack is full now..");
         }else{
             Node<E> insertNode = new Node(e);
-            insertNode.first=header;
+            insertNode.addFirst(header);
             header=insertNode;
             size++;
         }

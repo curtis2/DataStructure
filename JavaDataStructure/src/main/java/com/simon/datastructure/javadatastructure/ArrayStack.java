@@ -60,7 +60,6 @@ public class ArrayStack<E>{
             System.out.println("stack is empty now..");
             return null;
         }else{
-            //这个unchecked cast异常怎么解决？
             E popE=(E) elements[top];
             elements[top]=null;
             top--;

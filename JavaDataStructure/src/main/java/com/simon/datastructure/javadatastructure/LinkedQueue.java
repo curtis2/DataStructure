@@ -3,40 +3,35 @@ package com.simon.datastructure.javadatastructure;
 /**
  * auther: Simon zhang
  * Emaill:18292967668@163.com
- *  队列 - 顺序表的实现
+ * 链表实现 队列
  */
-public class ArrayQueue<E>{
+public class LinkedQueue<E> {
     /**
-     * 用于存储队列元素的数组
+     * 用于表示队列头部的元素
      */
-    Object[] elements;
+    Node header;
     /**
-     * 用于表示队列头部元素的下表
+     * 用于表示队列尾部的元素
      */
-    int first;
-    /**
-     * 用于表示队列尾部元素的下表
-     */
-    int last;
+    Node last;
     /**
      * 用于表示队列的容量
      */
     int maxSize;
     /**
-     * 用于表示队列中元素的数量
+     * 当前队列数量
      */
     int size;
+
     /**
      * 生成长度为MaxSize的空队列;
      * @param maxSize
      */
-    public ArrayQueue(int maxSize) {
+    public LinkedQueue(int maxSize) {
         if(maxSize<0){
             throw  new IllegalArgumentException("stack size must more than zero..");
         }
-        this.last=first=0;
         this.maxSize=maxSize;
-        this.elements=new Object[maxSize];
     }
 
     /**
@@ -54,8 +49,14 @@ public class ArrayQueue<E>{
         if(isFull()){
             System.out.println("Queue is full now..");
         }else{
-            elements[last]=e;
-            last=(last+1)%maxSize;
+            Node insertNode=new Node(e);
+            if(header==null){
+                header=insertNode;
+                last=insertNode;
+            }else{
+                last.addNext(insertNode);
+                last=insertNode;
+            }
             size++;
         }
     }
@@ -64,14 +65,12 @@ public class ArrayQueue<E>{
      * 将队头数据元素从队列中删除并返回。
      */
     public E pop(){
-        //优化，循环数组实现
         if(isEmpty()){
             System.out.println("Queue is empty now..");
             return null;
         }else{
-            E popE=(E)elements[first];
-            elements[first]=null;
-            first=(first+1)%maxSize;
+            E popE=(E)header.item;
+            header=header.next;
             size--;
             return popE;
         }
@@ -81,34 +80,38 @@ public class ArrayQueue<E>{
      * 判断队列是否为空。
      */
     public boolean isEmpty(){
-         return size==0;
+        return size==0;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
-        if(first<last){
-            for (int i = first; i <last; i++) {
-                sb.append(elements[i].toString());
-                if(i!=last-1){
-                    sb.append(',');
-                }
-            }
-        }else if(last<first){
-            for (int i = first; i <maxSize; i++) {
-                 sb.append(elements[i].toString());
-                 if(i!=maxSize-1){
-                     sb.append(',');
-                 }
-            }
-            for (int i = 0; i <last; i++) {
-                sb.append(',');
-                sb.append(elements[i].toString());
-            }
+        Node temp=header;
+        while (temp.next!=null){
+            sb.append(temp.item.toString());
+            sb.append(',');
+            temp=temp.next;
         }
+        sb.append(temp.item.toString());
         sb.append(']').toString();
         return  sb.toString();
     }
+
+
+    class Node<E>{
+        E item;
+        Node next;
+        public Node(E item) {
+            this.item = item;
+        }
+
+        public void addNext(Node next) {
+            this.next = next;
+        }
+    }
+
+
+
 
 }
