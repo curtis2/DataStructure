@@ -1,5 +1,8 @@
 package com.simon.datastructure.javadatastructure;
 
+import java.util.HashMap;
+import java.util.Stack;
+
 /**
  * auther: Simon zhang
  * Emaill:18292967668@163.com
@@ -26,12 +29,13 @@ public class BinaryTreeTraversalTest {
         C.setRight(I);
         G.setRight(H);
         F.setLeft(E);
-
 //        preOlderTraversal(A);
 //        inOlderTraversal(A);
 //        postOlderTraversal(A);
 //        inOlderTraversalNotRecursion(A);
-        preOlderTraversalNotRecursion(A);
+//        preOlderTraversalNotRecursion(A);
+//        postOlderTraversalNotRecursion(A);
+         levelOlderTraversal(A);
         System.out.println(builder.toString());
     }
 
@@ -107,6 +111,9 @@ public class BinaryTreeTraversalTest {
 
     /**
      * 先序遍历  非递归实现
+     *  1.
+     *  2.
+     *  3.
      * @param tree
      */
     public static void preOlderTraversalNotRecursion(Node tree){
@@ -126,20 +133,53 @@ public class BinaryTreeTraversalTest {
 
     /**
      * 后序遍历  非递归实现
+     *  1.左子树
+     *  2.右子树
+     *  3.根结点
      * @param tree
      */
     public static void postOlderTraversalNotRecursion(Node tree){
-        LinkedStack<Node> stack=new LinkedStack(30);
-        while (tree!=null||!stack.isEmpty()){
-            while (tree!=null){
-                stack.push(tree);
-                tree=tree.left;
-                builder.append(tree.item+",");
-            }
-            if(!stack.isEmpty()){
-                tree= stack.pop();
-                tree=tree.right;
-            }
+        //算法，先要遍历树的左子树，然后再遍历树的右子树,所以应该确保左子树和右子树遍历完成后再访问根结点
+        HashMap<Node,Boolean> map=new HashMap<>();
+        Stack<Node> stack=new Stack<>();
+        stack.push(tree);
+        while (!stack.isEmpty()){
+          Node temp=stack.peek();
+          //左子树
+          if(temp.left!=null&&!map.containsKey(temp.left)){
+              temp=temp.left;
+              while (temp!=null){
+                  if(map.containsKey(temp))break;
+                   stack.push(temp);
+                   temp=temp.left;
+              }
+              continue;
+          }
+          //右子树
+          if(temp.right!=null&&!map.containsKey(temp.right)){
+              stack.push(temp.right);
+              continue;
+          }
+          Node t=stack.pop();
+          map.put(t,true);
+          System.out.println(t.item);
+        }
+    }
+
+    /**
+     * 层序遍历  非递归实现
+     * 从上到大 从左到右
+     * @param tree
+     */
+    public static void levelOlderTraversal(Node tree){
+        //算法：先将根结点压入栈中，然后循环遍历队列，弹出第一个元素，然后把左结点和右结点压队列中
+        LinkedQueue<Node> queue=new LinkedQueue<>(30);
+        queue.push(tree);
+        while (!queue.isEmpty()){
+            Node pop = queue.pop();
+            System.out.println(pop.item);
+            if(pop.left!=null) queue.push(pop.left);
+            if(pop.right!=null) queue.push(pop.right);
         }
     }
 
